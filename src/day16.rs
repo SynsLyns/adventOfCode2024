@@ -1,4 +1,5 @@
 use std::{cmp::Ordering, collections::{BinaryHeap, HashSet}, fs};
+use std::time::Instant;
 
 const FILE_PATH: &str = "./inputs/input16.txt";
 const DIRS: [(i32, i32); 4] = [(0, 1), (-1, 0), (0, -1), (1, 0)];
@@ -50,6 +51,8 @@ pub fn solve() {
             }
         }
     }
+
+    let now = Instant::now();
     
     let mut pq = BinaryHeap::new();
     let mut start = Node {cost: 0, r: start.0, c: start.1, dir: 0, prev: vec![]};
@@ -90,5 +93,7 @@ pub fn solve() {
         }
     }
 
+    let elapsed = now.elapsed();
+    println!("Time: {:.2?}", elapsed);
     println!("Part 1: {part1} Part 2: {}", part2.len());
 }
