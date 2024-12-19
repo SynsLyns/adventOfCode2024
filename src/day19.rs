@@ -9,7 +9,7 @@ pub fn solve() {
     let contents: Vec<&str> = contents.split("\r\n\r\n").collect();
     
     let patterns: HashSet<&str> = contents[0].split(", ").collect();
-    let mut cache: HashMap<String, u64> = patterns.iter().map(|s| (s.to_string(), 1)).collect();
+    let mut cache: HashMap<&str, u64> = patterns.iter().map(|&s| (s, 1)).collect();
 
     let designs = contents[1];
 
@@ -27,7 +27,7 @@ pub fn solve() {
     println!("Part 1: {part1}, Part 2: {part2}");
 }
 
-fn design_possible_2(design: &str, patterns: &HashSet<&str>, cache: &mut HashMap<String, u64>) -> u64 {
+fn design_possible_2<'a>(design: &'a str, patterns: &HashSet<&str>, cache: &mut HashMap<&'a str, u64>) -> u64 {
     let mut count = 0;
     if let Some(x) = cache.get(design) {
         if patterns.contains(design) {
@@ -42,6 +42,6 @@ fn design_possible_2(design: &str, patterns: &HashSet<&str>, cache: &mut HashMap
             count += design_possible_2(&design[i..], patterns, cache);
         }
     }
-    cache.insert(design.to_string(), count);
+    cache.insert(design, count);
     return count;
 }
