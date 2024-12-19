@@ -17,7 +17,7 @@ pub fn solve() {
     let mut part1 = 0;
     let mut part2 = 0;
     for design in designs.lines() {
-        let ways = design_possible_2(design, &patterns, &mut cache, patterns.iter().max_by_key(|x| x.len()).unwrap().len());
+        let ways = design_ways(design, &patterns, &mut cache, patterns.iter().max_by_key(|x| x.len()).unwrap().len());
         part1 += if ways > 0 {1} else {0};
         part2 += ways;
     }
@@ -27,14 +27,14 @@ pub fn solve() {
     println!("Part 1: {part1}, Part 2: {part2}");
 }
 
-fn design_possible_2<'a>(design: &'a str, patterns: &HashSet<&str>, cache: &mut HashMap<&'a str, u64>, max_len: usize) -> u64 {
+fn design_ways<'a>(design: &'a str, patterns: &HashSet<&str>, cache: &mut HashMap<&'a str, u64>, max_len: usize) -> u64 {
     if let Some(&x) = cache.get(design) {
         return x;
     }
     let mut count = 0;
     for i in 1..=design.len().min(max_len) {
         if patterns.contains(&design[..i]) {
-            count += design_possible_2(&design[i..], patterns, cache, max_len);
+            count += design_ways(&design[i..], patterns, cache, max_len);
         }
     }
     cache.insert(design, count);
